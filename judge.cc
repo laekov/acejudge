@@ -11,30 +11,14 @@ int str_read_int(char* a) {
 }
 
 run_res watch(prob_cfg& pcfg, pid_t pid) {
-	char fln[max_path], tmp[max_path];
 	run_res ret;
-	ret. mem = 0;
-	while (1) {
-		sprintf(fln, "/proc/%d/status", pid);
-		FILE *stfl = fopen(fln, "r");
-		if (!stfl)
-			break;
-		int cmem = -1;
-		while (fgets(tmp, sizeof(tmp), stfl), !feof(stfl))
-			if (strstr(tmp, "VmData"))
-				cmem = str_read_int(tmp);
-		fclose(stfl);
-		if (cmem == -1)
-			break;
-		if (cmem > ret. mem)
-			ret. mem = cmem;
-	}
 	int status;
 	struct rusage ru;
 	wait4(pid, &status, 0, &ru);
 
 	//ret. time = ((te. tv_sec - tb. tv_sec)* 1000000 + (te. tv_usec - tb. tv_usec)) / 1000;
 	ret. time = ru. ru_utime. tv_sec * 1000 + ru. ru_utime. tv_usec / 1000;
+	ret. mem = ru. ru_maxrss;
 
 	if (ret. mem > pcfg. mem_lmt * 1024)
 		ret. res_num = -2;
