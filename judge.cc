@@ -11,9 +11,12 @@ int str_read_int(char* a) {
 }
 
 run_res watch(prob_cfg& pcfg, pid_t pid) {
-	char stfln[max_path], tmp[max_path];
 	run_res ret;
-	int status, tmem = 0;
+	int status;
+   
+	/*
+	int	tmem = 0;
+	char stfln[max_path], tmp[max_path];
 	sprintf(stfln, "/proc/%d/status", pid);
 	while (1) {
 		FILE* stfl = fopen(stfln, "r");
@@ -29,12 +32,14 @@ run_res watch(prob_cfg& pcfg, pid_t pid) {
 		else if (cmem == -1)
 			break;
 	}
+	*/
 	struct rusage ru;
 	wait4(pid, &status, 0, &ru);
 
 	//ret. time = ((te. tv_sec - tb. tv_sec)* 1000000 + (te. tv_usec - tb. tv_usec)) / 1000;
 	ret. time = ru. ru_utime. tv_sec * 1000 + ru. ru_utime. tv_usec / 1000;
-	ret. mem = max((long)tmem, ru. ru_maxrss);
+	//ret. mem = max((long)tmem, ru. ru_maxrss);
+	ret. mem = ru. ru_maxrss;
 
 	if (ret. mem > pcfg. mem_lmt * 1024)
 		ret. res_num = -2;
