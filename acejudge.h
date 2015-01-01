@@ -1,4 +1,17 @@
+/*
+ * acejudge.h
+ * universal header file for acejudge source files
+ * containing:
+ *		headers
+ *		typedefs
+ *		consts
+ *		global functions
+ */
+
 #ifndef ACEJUDGE_H
+
+#define ACEJUDGE_H_VERSION 3_0
+
 #define ACEJUDGE_H
 
 #include <cstdio>
@@ -66,5 +79,6 @@ int compile(prob_cfg&);
 void judge(prob_cfg&, bool);
 
 void show_help();
+void show_version();
 #endif
 

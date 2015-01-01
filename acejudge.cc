@@ -4,7 +4,7 @@
  * A simple judge software for OIers
  * Code by CDQZ_laekov
  * Version on linux
- * Last change on 12/31 2014
+ * Last change on 01/01 2015
  */
 
 #include "acejudge.h"
@@ -31,6 +31,10 @@ int main(int argc, char* args[]) {
 				show_help();
 				return 0;
 			}
+			else if (!strcmp(args[i] + 1, "version")) {
+				show_version();
+				return 0;
+			}
 		}
 	if (fastrun) {
 		judge(ccfg, 1);
@@ -45,7 +49,7 @@ int main(int argc, char* args[]) {
 					flag = 1;
 					break;
 				case 'R':
-					judge(ccfg, 1);
+					judge(ccfg, 0);
 					flag = 1;
 					break;
 				case 'Q':

@@ -11,14 +11,30 @@ int str_read_int(char* a) {
 }
 
 run_res watch(prob_cfg& pcfg, pid_t pid) {
+	char stfln[max_path], tmp[max_path];
 	run_res ret;
-	int status;
+	int status, tmem = 0;
+	sprintf(stfln, "/proc/%d/status", pid);
+	while (1) {
+		FILE* stfl = fopen(stfln, "r");
+		if (!stfl)
+			break;
+		int cmem = -1;
+		while (fgets(tmp, sizeof(tmp), stfl), !feof(stfl))
+			if (strstr(tmp, "VmData"))
+				cmem = str_read_int(tmp);
+		fclose(stfl);
+		if (cmem > tmem)
+			tmem = cmem;
+		else if (cmem == -1)
+			break;
+	}
 	struct rusage ru;
 	wait4(pid, &status, 0, &ru);
 
 	//ret. time = ((te. tv_sec - tb. tv_sec)* 1000000 + (te. tv_usec - tb. tv_usec)) / 1000;
 	ret. time = ru. ru_utime. tv_sec * 1000 + ru. ru_utime. tv_usec / 1000;
-	ret. mem = ru. ru_maxrss;
+	ret. mem = max((long)tmem, ru. ru_maxrss);
 
 	if (ret. mem > pcfg. mem_lmt * 1024)
 		ret. res_num = -2;
@@ -65,8 +81,8 @@ run_res run_case(prob_cfg& pcfg, int id) {
 		if (!pcfg. fou)
 			freopen("testtmp.out", "w", stdout);
 		freopen(arglg, "w", stderr);
-		lmtN. rlim_cur = pcfg. mem_lmt * 1024 * 1024;
-		lmtN. rlim_max = pcfg. mem_lmt * 1024 * 1024;
+		lmtN. rlim_cur = pcfg. mem_lmt * 1024 * 1280;
+		lmtN. rlim_max = pcfg. mem_lmt * 1024 * 1280;
 		setrlimit(RLIMIT_AS, &lmtN);
 		lmtN. rlim_cur = (pcfg. time_lmt + 100) / 1000 + 1;
 		lmtN. rlim_max = (pcfg. time_lmt + 100) / 1000 + 1;
