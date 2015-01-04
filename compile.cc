@@ -32,7 +32,7 @@ int compile_cpp(prob_cfg& pcfg) {
 	pcfg. fin = pcfg. fou = 0;
 	while (!feof(pf)) {
 		fgets(gl, max_line, pf);
-		if (strstr(gl, "system(") || strstr(gl, "<con>"))
+		if (strstr(gl, "system(") || strstr(gl, "<con>") || strstr(gl, "fork") || strstr(gl, "unistd.h"))
 			return 1;
 		char *cp = strstr(gl, "//"), *bn;
 		pt = gl;

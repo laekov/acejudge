@@ -15,7 +15,7 @@ void show_help() {
 }
 
 const char version_text[] = "\
-\33[30m\33[42mAce Judge\33[0m \33[0mV3.0 Beta2 \33[35m(Release 01/01 2015) \n\
+\33[30m\33[42mAce Judge\33[0m \33[0mV3.0 Beta3 \33[35m(Released 01/04 2015) \n\
 			\33[34mby CDQZ_\33[31ml\33[32ma\33[33me\33[34mk\33[35mo\33[36mv\33[0m \
 ";
 

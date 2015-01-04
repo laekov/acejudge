@@ -4,7 +4,7 @@
  * A simple judge software for OIers
  * Code by CDQZ_laekov
  * Version on linux
- * Last change on 01/01 2015
+ * Last change on 01/04 2015
  */
 
 #include "acejudge.h"

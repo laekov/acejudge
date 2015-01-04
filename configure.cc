@@ -16,15 +16,21 @@ void prob_cfg :: load(char *gfn = 0) {
 		if (*g == 10)
 			*g = 0;
 	FILE *ipf = fopen(cfg_name, "r");
-	if (!ipf)
+	if (!ipf) {
+		ipf = fopen(cfg_name, "w");
+		fclose(ipf);
+		nofile = 0;
 		return file_wrong();
-	fscanf(ipf, "%s", ipt_fmt);
-	fscanf(ipf, "%s", opt_fmt);
-	fscanf(ipf, "%d%d%d%d", &beg_num, &end_num, &time_lmt, &mem_lmt);
-	fscanf(ipf, "%s", prg_name);
-	fclose(ipf);
-	empty = 0;
-	nofile = 0;
+	}
+	else {
+		fscanf(ipf, "%s", ipt_fmt);
+		fscanf(ipf, "%s", opt_fmt);
+		fscanf(ipf, "%d%d%d%d", &beg_num, &end_num, &time_lmt, &mem_lmt);
+		fscanf(ipf, "%s", prg_name);
+		fclose(ipf);
+		empty = 0;
+		nofile = 0;
+	}
 }
 
 void prob_cfg :: make(char *gfn = 0) {
@@ -56,12 +62,12 @@ void prob_cfg :: show() {
 	}
 	else {
 		setcolor(33);
-		puts("Input format");
+		puts("Input data format");
 		setcolor(32);
 		puts(ipt_fmt);
 
 		setcolor(33);
-		puts("Output format");
+		puts("Output data format");
 		setcolor(32);
 		puts(opt_fmt);
 
@@ -93,13 +99,13 @@ void prob_cfg :: get() {
 	char fmt[max_path], suf[max_path];
 	setcolor(33);
 	fmt[0] = 0;
-	puts("IO format");
+	puts("IO data format");
 	get_str(fmt);
 	if (fmt[0]) {
-		puts("Input sufix");
+		puts("Input data sufix");
 		get_str(suf);
 		sprintf(ipt_fmt, "%s%s", fmt, suf);
-		puts("Output sufix");
+		puts("Output data sufix");
 		get_str(suf);
 		sprintf(opt_fmt, "%s%s", fmt, suf);
 	}
@@ -114,7 +120,7 @@ void prob_cfg :: get() {
 }
 
 void config(prob_cfg& c) {
-	puts("C - Config contest");
+	puts("C - Config problem");
 	puts("L - Show cfg now");
 	puts("E - Load existing cfg file");
 	puts("W - Save cfg file");
