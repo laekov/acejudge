@@ -39,7 +39,7 @@ run_res mkres(int, int, int);
 
 const int max_path = 256;
 const int max_line = 1024;
-const char default_compile_cpp_cmd[] = "g++ %s -g -o ajtest/testtmp";
+const char default_compile_cpp_cmd[] = "g++ %s -g -o .ajtest/testtmp";
 
 struct prob_cfg {
 	bool empty, nofile;
