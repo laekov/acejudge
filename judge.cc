@@ -39,7 +39,7 @@ run_res watch(prob_cfg& pcfg, pid_t pid) {
 	//ret. time = ((te. tv_sec - tb. tv_sec)* 1000000 + (te. tv_usec - tb. tv_usec)) / 1000;
 	ret. time = ru. ru_utime. tv_sec * 1000 + ru. ru_utime. tv_usec / 1000;
 	//ret. mem = max((long)tmem, ru. ru_maxrss);
-	ret. mem = ru. ru_maxrss;
+	ret. mem = ru. ru_maxrss / 1024;
 
 	if (ret. mem > pcfg. mem_lmt * 1024)
 		ret. res_num = -2;
@@ -113,10 +113,10 @@ int judge_case(prob_cfg& pcfg, int id) {
 	if (pcfg. fou) {
 		//sprintf(od, "mv %s %s", prg_opt, prg_opt);
 		//system(od);
-		sprintf(od, "diff -s -w .ajtest/%s %s >.ajtest/diff%d.log", pcfg. prg_ou, ofn, id);
+		sprintf(od, "diff -s -w -b -B .ajtest/%s %s >.ajtest/diff%d.log", pcfg. prg_ou, ofn, id);
 	}
 	else {
-		sprintf(od, "diff -s -w .ajtest/testtmp.out %s >.ajtest/diff%d.log", ofn, id);
+		sprintf(od, "diff -s -w -b -B .ajtest/testtmp.out %s >.ajtest/diff%d.log", ofn, id);
 	}
 	int dret = system(od);
 	return !dret;
